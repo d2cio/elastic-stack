@@ -1,0 +1,73 @@
+version: '1.0'
+services:
+  - name: elastic
+    type: docker
+    image: elasticsearch
+    version: 7.9.0
+    env:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    ports:
+      - 3000
+    remoteAccess: false
+    configFiles:
+      - dest: /usr/share/elasticsearch/config/elasticsearch.yml
+        src: ./configs/elasticsearch.yml
+    deployTo:
+      - elk
+
+  - name: logstash
+    type: docker
+    image: logstash
+    version: 7.9.0
+    ports:
+      - 5000
+      - 9600
+      - 12201/udp
+    remoteAccess: true
+    env:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    configFiles:
+      - dest: /usr/share/logstash/config/logstash.yml
+        src: ./configs/logstash.yml
+      - dest: /usr/share/logstash/pipeline/logstash.conf
+        src: ./configs/logstash.conf
+    deployTo:
+      - elk
+
+  - name: kibana
+    type: docker
+    image: kibana
+    version: 7.9.0
+    ports:
+      - 5601
+    remoteAccess: false
+    env:
+      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
+      ELASTICSEARCH_HOSTS: http://{{=service('elastic').getAppAlias()}}:9200
+    configFiles:
+      - dest: /usr/share/kibana/config/kibana.yml
+        src: ./configs/kibana.yml
+    deployTo:
+      - elk
+
+  - name: web
+    type: nginx
+    version: 1.19
+    ports:
+      - 80
+      - 443
+    remoteAccess: true
+    env:
+      BASICAUTH_KIBANA_USER: null
+      BASICAUTH_KIBANA_PASS: null
+    serviceFiles:
+      - name: kibana
+        src: ./configs/kibana.conf
+    deployTo:
+      - elk
+
+hosts:
+  - name: elk
+    requirements:
+      cores: 1
+      memory: 4
