@@ -1,17 +1,17 @@
-# ELK stack for D2C.io
+# Elastic stack for D2C.io
 
 ## How to deploy a stack
 
-1. Open a [stack page](https://panel.d2c.io/new-stack?url=https://github.com/d2cio/elk-simple-stack/archive/master.zip)
+1. Open a [stack page](https://panel.d2c.io/new-stack?url=https://github.com/d2cio/elastic-stack/archive/master.zip)
 2. Sign in or create an account
-3. Choose a provider ([how to add a cloud provider](https://docs.d2c.io/getting-started/cloud-providers/)) and a region if you want to create new hosts or choose the created ones in **Select hosts** menu
+3. Choose a provider ([how to add a cloud provider](https://docs.d2c.io/providers/cloud-providers/)) and a region if you want to create new hosts or choose the created ones in **Select hosts** menu
 3. Fill in necessary fields (if they are, e.g. link to your repository)
 4. Click **Create hosts and services**
 
 ## Demo
 
-![How to deploy a stack](https://github.com/mastappl/images/blob/master/elk-simple.gif)
+![How to deploy a stack](https://github.com/mastappl/images/blob/master/elastic_stack.gif)
 
 ## Minimal recommended configuration:
 
-- 1 host with 2GB RAM
+- 1 host with 4GB RAM
